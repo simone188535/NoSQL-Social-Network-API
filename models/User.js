@@ -13,15 +13,15 @@ const userSchema = new Schema({
     type: String,
     unique: true,
     required: true,
-  },
-  validate: {
-    validator: function (v) {
-      return validator.isEmail(v);
-    },
-    message: "Please enter a valid email",
+    validate: {
+        validator: function (v) {
+          return validator.isEmail(v);
+        },
+        message: "Please enter a valid email",
+      },
   },
   thoughts: [{ type: Schema.Types.ObjectId, ref: "Thought" }],
-  friends: [{ type: Schema.Types.ObjectId, ref: "Friends" }],
+  friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 // !!! Needs virtual
 const User = model("User", userSchema);
