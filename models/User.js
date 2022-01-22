@@ -32,10 +32,10 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.pre('find', function (next) {
-    this.populate("thoughts friends");
-    next();
-});
+// userSchema.pre('find', function (next) {
+//     this.populate("thoughts friends");
+//     next();
+// });
 
 userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
