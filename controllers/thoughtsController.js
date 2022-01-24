@@ -86,7 +86,7 @@ exports.deleteThought = async (req, res) => {
     const deletedThought = await Thought.findOneAndRemove({ _id: thoughtId });
 
     if (!deletedThought) {
-        return res.status(404).json({message: 'No Thought found.'});
+      return res.status(404).json({ message: "No Thought found." });
     }
 
     const recipientOfThought = await User.findOne({
@@ -101,6 +101,46 @@ exports.deleteThought = async (req, res) => {
       );
     }
     res.status(200).json(deletedThought);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+exports.addReaction = async (req, res) => {
+  try {
+    const { thoughtId } = req.params;
+    const { reactionText, username } = req.body;
+
+    if (!thoughtId) {
+      return res.status(406).json("thoughtId must be provided");
+    }
+    const reactionAddedToThought = await Thought.findOneAndUpdate(
+      { _id: thoughtId },
+      { $addToSet: { reactions: { reactionBody: reactionText, username } } },
+      { new: true }
+    );
+
+    res.status(201).json(reactionAddedToThought);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+exports.removeReaction = async (req, res) => {
+  try {
+    const { thoughtId, reactionId } = req.params;
+
+    if (!thoughtId || !reactionId) {
+      return res.status(406).json("thoughtId and reactionId must be provided");
+    }
+    const reactionRemovedToThought = await Thought.findOneAndUpdate(
+      { _id: thoughtId },
+      { $pull: { reactions: { _id: reactionId } } },
+      { new: true, safe: true }
+    );
+
+    res.status(201).json(reactionRemovedToThought);
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
