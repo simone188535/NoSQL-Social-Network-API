@@ -52,7 +52,7 @@ exports.updateUser = async (req, res) => {
     }
 
     const updatedUser = await User.findOneAndUpdate(
-      { id: userId },
+      { _id: userId },
       {
         username,
         email,
@@ -75,7 +75,7 @@ exports.deleteUser = async (req, res) => {
       return res.status(406).json('userId must be provided');
     }
 
-    const deletedUser = await User.deleteOne({ id: userId });
+    const deletedUser = await User.deleteOne({ _id: userId });
 
     res.status(204).json(deletedUser);
   } catch (err) {
@@ -91,7 +91,7 @@ exports.addFriendToUsersFriendList = async (req, res) => {
       return res.status(406).json('userId and friendId must be provided');
     }
     const user = await User.findOneAndUpdate(
-      { id: userId },
+      { _id: userId },
       { $addToSet: { friends: friendId } },
       { new: true }
     );
@@ -110,7 +110,7 @@ exports.removeFriendFromUsersFriendList = async (req, res) => {
       return res.status(406).json('userId and friendId must be provided');
     }
     const user = await User.findOneAndUpdate(
-      { id: userId },
+      { _id: userId },
       { $pull: { friends: friendId } },
       { new: true }
     );
