@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema, Types } = mongoose;
+const { Schema } = mongoose;
 
 const reactionSchema = new Schema({
 /*
@@ -19,6 +19,7 @@ const reactionSchema = new Schema({
   createdAt: { 
     type: Date, 
     default: Date.now,
+    // !!!!!!
     // https://mongoosejs.com/docs/schematypes.html#getters
     get: v => new Intl.DateTimeFormat('en-US', options).format(v)
  },
