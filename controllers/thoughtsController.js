@@ -95,12 +95,13 @@ exports.deleteThought = async (req, res) => {
 
     if (recipientOfThought) {
       // updatedUser
-      await User.updateOne(
+    await User.updateOne(
         { _id: recipientOfThought._id },
-        { $pull: { thoughts: recipientOfThought._id } }
+        { $pull: { thoughts: thoughtId } }
       );
     }
-    res.status(200).json(deletedThought);
+    
+    res.status(204).json(deletedThought);
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
@@ -140,7 +141,7 @@ exports.removeReaction = async (req, res) => {
       { new: true, safe: true }
     );
 
-    res.status(201).json(reactionRemovedToThought);
+    res.status(204).json(reactionRemovedToThought);
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
